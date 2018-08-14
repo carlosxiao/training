@@ -1,4 +1,4 @@
-# training code
+# Java互联网架构师培训课程
 
 ## redis 相关代码
 
