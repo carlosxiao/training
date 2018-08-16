@@ -4,3 +4,4 @@
 
 ### redis客户端操作[springboot-redis](./redis/springboot-redis)
 ### redis数据缓存[springboot-redis-cache](./redis/springboot-redis-cache)
+### redis分布式锁[springboot-redis-lock](./redis/springboot-redis-lock)
