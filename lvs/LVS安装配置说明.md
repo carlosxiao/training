@@ -161,7 +161,7 @@ LBLCR   #带复制的基于本地的最少连接
 
 * **架构图**
 
-  ![1534142162942](.\images\LVS-NAT.png)
+  ![1534142162942](images\LVS-NAT.png)
 
 * **工作方式**
 
@@ -320,7 +320,7 @@ LBLCR   #带复制的基于本地的最少连接
 
 * **架构图**
 
-  ![LVS-DR](.\images\LVS-DR.png)
+  ![LVS-DR](images\LVS-DR.png)
 
 * **工作方式**
 
