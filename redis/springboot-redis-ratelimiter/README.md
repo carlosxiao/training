@@ -55,6 +55,55 @@ public class RedisRateLimiter {
 
 ### 2、Intercepted
 
+```
+@Bean
+    public WebMvcConfigurer webMvcConfigurer() {
+        return new WebMvcConfigurerAdapter () {
+
+            @Override
+            public void addInterceptors(InterceptorRegistry interceptorRegistry) {
+
+                return new WebMvcConfigurerAdapter() {
+                    @Override
+                    public void addInterceptors(InterceptorRegistry registry) {
+                        interceptorRegistry.addInterceptor(new HandlerInterceptor() {
+                            @Override
+                            public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
+                                HandlerMethod handlerMethod = (HandlerMethod) o;
+                                Method method = handlerMethod.getMethod();
+                                RateLimiter rateLimiter = method.getAnnotation(RateLimiter.class);
+                                if (null != rateLimiter) {
+                                    int limit = rateLimiter.limit();
+                                    int timeout = rateLimiter.timeout();
+                                    Jedis jedis = jedisPool.getResource();
+                                    String token = RedisRateLimiter.getTokenFromBucket(jedis, limit, timeout);
+                                    if (null == token) {
+                                        httpServletResponse.sendError(500);
+                                        return false;
+                                    }
+                                    log.info("token : {}", token);
+                                }
+                                return true;
+                            }
+
+                            @Override
+                            public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
+
+                            }
+
+                            @Override
+                            public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
+
+                            }
+                        }).addPathPatterns("/*");
+                    }
+                };
+            }
+
+        };
+    }
+```
+
 ### 3、Controller
 
 ``` java
