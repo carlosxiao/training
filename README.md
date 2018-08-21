@@ -8,6 +8,7 @@
 ### redis抽奖 [springboot-redis-lottery](./redis/springboot-redis-lottery)
 ### redis消息队列-生产者 [springboot-redis-publisher](./redis/springboot-redis-publisher)
 ### redis消息队列-消费者 [springboot-redis-subscriber](./redis/springboot-redis-subscriber)
+### redis分布式限流 [springboot-redis-ratelimiter](./redis/springboot-redis-ratelimiter)
 
 
 ## LBS
