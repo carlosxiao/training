@@ -188,8 +188,6 @@ LBLCR   #带复制的基于本地的最少连接
      ## 新建controller测试接口
      ```
 
-     
-
   2. 部署**ipvs** 服务并测试
 
      ```shell
@@ -227,7 +225,7 @@ LBLCR   #带复制的基于本地的最少连接
   3. 测试访问接口 
 
      ```shell
-     curl http://192.168.13.202/hello?name=lvs
+     curl http://192.168.13.202
      ```
 
   4. 更改LVS调度算法
@@ -248,8 +246,6 @@ LBLCR   #带复制的基于本地的最少连接
      #第二种方法
      ipvsadm -S > /etc/sysconfig/ipvsadm.s1
      ```
-
-     
 
   6. 恢复 ipvsadm规则
 
@@ -314,7 +310,6 @@ LBLCR   #带复制的基于本地的最少连接
      ;; esac
      ```
 
-     
 
 ### 4.2 DR(直接路由)
 
@@ -362,8 +357,6 @@ LBLCR   #带复制的基于本地的最少连接
      #查看ipvs定义的规则列表
      ipvsadm -L -n
      ```
-
-     
 
   2. 在Real Server1 和Real Server2上做以下配置
 
@@ -500,7 +493,6 @@ LBLCR   #带复制的基于本地的最少连接
      ;; esac
      ```
 
-     
 
 ### 4.3 TUN(隧道)
 
@@ -513,4 +505,140 @@ LBLCR   #带复制的基于本地的最少连接
 
 
 **这种方式需要所有的服务器支持"IP Tunneling"(IP Encapsulation)协议, 用的少，不做过多讲解**
+
+
+
+
+
+## 五、Keepalived+LVS
+
+```
+! Configuration File for keepalived
+
+global_defs {
+   notification_email {
+     acassen@firewall.loc
+     failover@firewall.loc
+     sysadmin@firewall.loc
+   }
+   notification_email_from Alexandre.Cassen@firewall.loc
+   smtp_server 127.0.0.1
+   smtp_connect_timeout 30
+   router_id LVS_DEVEL
+}
+
+
+vrrp_instance VI_1 {
+    state MASTER
+    interface eth0
+    virtual_router_id 51
+    priority 100
+    advert_int 1
+    authentication {
+        auth_type PASS
+        auth_pass 1111
+    }
+    virtual_ipaddress {
+        192.168.13.204
+    }
+}
+
+virtual_server 192.168.13.204 80 {
+    delay_loop 6
+    lb_algo rr
+    lb_kind DR
+    nat_mask 255.255.255.0
+    persistence_timeout 50
+    protocol TCP
+
+    real_server 192.168.13.48 80 {
+        weight 1
+        TCP_CHECK {
+            connect_timeout 10
+            nb_get_retry 3
+            delay_before_retry 3
+            connect_port 80
+        }
+    }
+    real_server 192.168.13.49 80 {
+        weight 1
+        TCP_CHECK {
+            connect_timeout 10
+            nb_get_retry 3
+            delay_before_retry 3
+            connect_port 80
+        }
+    }
+}
+```
+
+```
+! Configuration File for keepalived
+
+global_defs {
+   notification_email {
+     acassen@firewall.loc
+     failover@firewall.loc
+     sysadmin@firewall.loc
+   }
+   notification_email_from Alexandre.Cassen@firewall.loc
+   smtp_server 127.0.0.1
+   smtp_connect_timeout 30
+   router_id LVS_DEVEL
+}
+
+
+vrrp_instance VI_1 {
+    state BACKUP
+    interface eth0
+    virtual_router_id 51
+    priority 99
+    advert_int 1
+    authentication {
+        auth_type PASS
+        auth_pass 1111
+    }
+    virtual_ipaddress {
+        192.168.13.204
+    }
+}
+
+virtual_server 192.168.13.204 80 {
+    delay_loop 6
+    lb_algo rr
+    lb_kind DR
+    nat_mask 255.255.255.0
+    persistence_timeout 50
+    protocol TCP
+
+    real_server 192.168.13.48 80 {
+        weight 1
+        TCP_CHECK {
+            connect_timeout 10
+            nb_get_retry 3
+            delay_before_retry 3
+            connect_port 80
+        }
+    }
+    real_server 192.168.13.49 80 {
+        weight 1
+        TCP_CHECK {
+            connect_timeout 10
+            nb_get_retry 3
+            delay_before_retry 3
+            connect_port 80
+        }
+    }
+}
+```
+
+
+
+RS上添加 网卡
+
+```
+ifconfig lo:0 192.168.13.204/32 up
+
+route add -host 192.168.13.204 dev lo:0
+```
 
