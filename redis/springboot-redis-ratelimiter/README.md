@@ -3,7 +3,7 @@
 
 ## usage
 
-### RateLimiter
+1、### RateLimiter
 ``` java
 @Slf4j
 public class RedisRateLimiter {
@@ -53,8 +53,9 @@ public class RedisRateLimiter {
 }
 ```
 
+### 2、Intercepted
 
-### Controller
+### 3、Controller
 
 ``` java
 @RestController
