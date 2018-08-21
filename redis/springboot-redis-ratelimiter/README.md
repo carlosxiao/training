@@ -3,7 +3,7 @@
 
 ## usage
 
-1、### RateLimiter
+### 1、RateLimiter
 ``` java
 @Slf4j
 public class RedisRateLimiter {
