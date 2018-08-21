@@ -53,7 +53,21 @@ public class RedisRateLimiter {
 }
 ```
 
-### 2、Intercepted
+### 2、Annotation
+
+``` java
+
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface RateLimiter {
+    int limit() default 10;
+    int timeout() default 1000;
+}
+
+```
+
+### 3、Intercepted
 
 ```
 @Bean
@@ -104,7 +118,7 @@ public class RedisRateLimiter {
     }
 ```
 
-### 3、Controller
+### 4、Controller
 
 ``` java
 @RestController
