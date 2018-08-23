@@ -9,6 +9,7 @@
 ### redis消息队列-生产者 [springboot-redis-publisher](./redis/springboot-redis-publisher)
 ### redis消息队列-消费者 [springboot-redis-subscriber](./redis/springboot-redis-subscriber)
 ### redis分布式限流 [springboot-redis-ratelimiter](./redis/springboot-redis-ratelimiter)
+### redis集群客户端 [spring-redis-cluster](./redis/spring-redis-cluster)
 
 
 ## LBS
