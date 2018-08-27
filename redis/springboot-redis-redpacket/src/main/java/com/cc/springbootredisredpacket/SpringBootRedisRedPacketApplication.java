@@ -1,12 +1,12 @@
-package com.cc.springredis;
+package com.cc.springbootredisredpacket;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SpringRedisClusterApplication {
+public class SpringBootRedisRedPacketApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringRedisClusterApplication.class, args);
+		SpringApplication.run(SpringBootRedisRedPacketApplication.class, args);
 	}
 }
