@@ -10,6 +10,7 @@
 ### redis消息队列-消费者 [springboot-redis-subscriber](./redis/springboot-redis-subscriber)
 ### redis分布式限流 [springboot-redis-ratelimiter](./redis/springboot-redis-ratelimiter)
 ### redis集群客户端 [spring-redis-cluster](./redis/spring-redis-cluster)
+### redis抢红包 [springboot-redis-redpacket](./redis/springboot-redis-redpacket)
 
 
 ## LBS
